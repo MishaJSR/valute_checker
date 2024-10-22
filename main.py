@@ -32,6 +32,7 @@ app.include_router(rates_router)
 
 
 if __name__ == "__main__":
+    update_info(Settings().get_url())
     try:
         uvicorn.run(app, host="0.0.0.0", port=8000)
     except (KeyboardInterrupt, SystemExit):
