@@ -26,13 +26,13 @@ setup_logging()
 url = Settings().get_url()
 app = FastAPI(title="Valute App")
 scheduler = BackgroundScheduler()
-scheduler.add_job(update_info, 'cron', hour=11, minute=51, args=[url])  # Запуск в 12:00
+scheduler.add_job(update_info, 'cron', hour=11, minute=00, args=[url])  # Запуск в 12:00
 scheduler.start()
 app.include_router(rates_router)
 
 
 if __name__ == "__main__":
     try:
-        uvicorn.run(app, host="localhost", port=8000)
+        uvicorn.run(app, host="0.0.0.0", port=8000)
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()
