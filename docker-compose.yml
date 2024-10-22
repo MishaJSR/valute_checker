@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+
+  fastapi:
+    image: "fastapi-test"
+    stop_signal: SIGINT
+    build:
+      context: .
+    depends_on:
+      - pg_database
+    stdin_open: true
+    command: >
+      sh -c "poetry run python3 -m main"
+    ports:
+      - "8000:8000"
+    env_file:
+      - ".env"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
