@@ -2,10 +2,12 @@ import asyncio
 import logging
 from typing import Optional, Union
 
+import pydantic
 import redis
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from base_config import Settings
+from rates_router.schemas import ConvertData
 from redis_manager.RedisManager import RedisManager
 from redis_manager.exceptions import NoneDataException, AttributeException
 
@@ -15,21 +17,13 @@ router = APIRouter(
 )
 
 
-@router.get("")
-async def convert_values(from_param: str = Query(..., alias="from"), to: str = None,
-                         value: Optional[Union[int, float]] = 1):
-    """
-    Возвращает обьект dict вида: \n
 
-        some_dict =
-            {
-              "result": 124.123,
-            }
-    """
-    value = round(value, 2)
+@router.post("")
+async def convert_values(data: ConvertData):
     try:
-        first_param = RedisManager.get_from_redis(from_param)
-        second_param = RedisManager.get_from_redis(to)
+        value = round(data.value, 2)
+        first_param = RedisManager.get_from_redis(data.fr_key)
+        second_param = RedisManager.get_from_redis(data.to_key)
         k = round(first_param / second_param, 3)
         res = round(k * value, 3)
         return {
@@ -41,6 +35,8 @@ async def convert_values(from_param: str = Query(..., alias="from"), to: str = N
         return HTTPException(status_code=400, detail={e.message})
     except redis.exceptions.ConnectionError:
         return HTTPException(status_code=500, detail={"Ошибка подключения к базе данных"})
+    except pydantic.ValidationError:
+        return HTTPException(status_code=422, detail={"Ошибка при проверке корректности полей"})
 
 
 @router.get("/val_list")
@@ -59,4 +55,3 @@ async def val_list():
         return res
     except redis.exceptions.ConnectionError:
         return HTTPException(status_code=500, detail={"Ошибка подключения к базе данных"})
-
