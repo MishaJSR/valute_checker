@@ -17,9 +17,8 @@ router = APIRouter(
 )
 
 
-
 @router.post("")
-async def convert_values(data: ConvertData):
+async def convert_values(data=Depends(ConvertData)):
     try:
         value = round(data.value, 2)
         first_param = RedisManager.get_from_redis(data.fr_key)
@@ -35,8 +34,6 @@ async def convert_values(data: ConvertData):
         return HTTPException(status_code=400, detail={e.message})
     except redis.exceptions.ConnectionError:
         return HTTPException(status_code=500, detail={"Ошибка подключения к базе данных"})
-    except pydantic.ValidationError:
-        return HTTPException(status_code=422, detail={"Ошибка при проверке корректности полей"})
 
 
 @router.get("/val_list")

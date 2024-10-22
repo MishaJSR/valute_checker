@@ -1,9 +1,10 @@
 from pydantic import BaseModel, field_validator
+from fastapi.exceptions import HTTPException
 
 
 def validate_key(v: str) -> str:
     if not (len(v) == 3 and v.isupper() and v.isalpha()):
-        raise ValueError('key must be exactly 3 uppercase English letters')
+        raise HTTPException(status_code=422, detail=f'key {v} must be exactly 3 uppercase English letters')
     return v
 
 
