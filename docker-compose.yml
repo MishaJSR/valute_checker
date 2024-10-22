@@ -1,6 +1,17 @@
 version: '3.8'
 
 services:
+  redis-dev:
+    image: redis:6.2-alpine
+    container_name: "redis-dev"
+    ports:
+      - "6388:6388"
+    restart: always
+    command: /bin/sh -c "redis-server --port $$REDISPORT --save 20 1 --loglevel warning --requirepass $$REDISPASSWORD"
+    env_file:
+      - .env
+    volumes:
+      - cache:/data
 
   fastapi:
     image: "fastapi-test"
@@ -23,3 +34,5 @@ services:
         max-size: "200k"
         max-file: "10"
 
+volumes:
+  cache: {}
