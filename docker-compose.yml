@@ -18,8 +18,6 @@ services:
     stop_signal: SIGINT
     build:
       context: .
-    depends_on:
-      - pg_database
     stdin_open: true
     command: >
       sh -c "poetry run python3 -m main"
