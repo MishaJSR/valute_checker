@@ -26,7 +26,7 @@ setup_logging()
 url = Settings().get_url()
 app = FastAPI(title="Valute App")
 scheduler = BackgroundScheduler()
-scheduler.add_job(update_info, 'cron', hour=11, minute=00, args=[url])  # Запуск в 12:00
+scheduler.add_job(update_info, 'cron', hour=11, minute=00, args=[url])
 scheduler.start()
 app.include_router(rates_router)
 
