@@ -3,9 +3,6 @@ from datetime import datetime
 import requests
 import xml.etree.ElementTree as ET
 
-
-# url = "https://cbr.ru/scripts/XML_daily.asp?date_req=20/03/2024"
-
 def update_info(url):
     formatted_date = datetime.now().strftime("%d/%m/%Y")
     response = requests.get(url + formatted_date, timeout=3)

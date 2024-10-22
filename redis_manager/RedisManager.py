@@ -25,4 +25,13 @@ class RedisManager:
         if not res:
             logging.error(f"{NoneDataException().message} {key}")
             raise NoneDataException(key=key)
-        return RedisManager.client.get(data.key)
+        return float(RedisManager.client.get(data.key))
+
+    @staticmethod
+    def get_all():
+        keys = RedisManager.client.keys("*")
+        all_data = {}
+        for key in keys:
+            value = RedisManager.client.get(key)
+            all_data[key] = value
+        return all_data
