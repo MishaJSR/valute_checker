@@ -5,10 +5,12 @@ import redis
 from redis_manager.exceptions import NoneDataException
 from redis_manager.schemas import RedisSendData, RedisGetData
 from redis_manager.exceptions import exception_wrapper
+from base_config import Settings
 
 
 class RedisManager:
-    client = redis.Redis(host='127.0.0.1', port=6379, db=0, decode_responses=True)
+    host, port = Settings().get_redis_config()
+    client = redis.Redis(host=host, port=port, db=0, decode_responses=True)
 
     @staticmethod
     @exception_wrapper
