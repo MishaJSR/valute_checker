@@ -18,4 +18,4 @@ class Settings(BaseSettings):
         return self.URL
 
     def get_redis_config(self):
-        return self.REDISHOST, self.REDISPORT
+        return self.REDISHOST, self.REDISPORT, self.REDISUSERNAME, self.REDISPASSWORD,
