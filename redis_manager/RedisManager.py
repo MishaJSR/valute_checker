@@ -2,14 +2,15 @@ import logging
 
 import redis
 
+
 from redis_manager.exceptions import NoneDataException
 from redis_manager.schemas import RedisSendData, RedisGetData
 from redis_manager.exceptions import exception_wrapper
-from base_config import Settings
+from base_config import settings
 
 
 class RedisManager:
-    host, port, password = Settings().get_redis_config()
+    host, port, password = settings.get_redis_config()
     client = redis.Redis(host=host, port=port, decode_responses=True, password=password)
 
     @staticmethod

@@ -7,7 +7,7 @@ import betterlogging as bl
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from tasks.update_info import update_info
-from base_config import Settings
+from base_config import settings
 
 
 def setup_logging():
@@ -23,7 +23,7 @@ def setup_logging():
 
 
 setup_logging()
-url = Settings().get_url()
+url = settings.get_url()
 app = FastAPI(title="Valute App")
 scheduler = BackgroundScheduler()
 scheduler.add_job(update_info, 'cron', hour=11, minute=00, args=[url])
@@ -32,7 +32,7 @@ app.include_router(rates_router)
 
 
 if __name__ == "__main__":
-    update_info(Settings().get_url())
+    update_info(settings.get_url())
     try:
         uvicorn.run(app, host="0.0.0.0", port=8000)
     except (KeyboardInterrupt, SystemExit):
