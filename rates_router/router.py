@@ -54,5 +54,9 @@ async def val_list():
               "USD": 97.332,
             }
     """
-    return RedisManager.get_all()
+    try:
+        res = RedisManager.get_all()
+        return res
+    except redis.exceptions.ConnectionError:
+        return HTTPException(status_code=500, detail={"Ошибка подключения к базе данных"})
 

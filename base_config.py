@@ -7,7 +7,6 @@ load_dotenv()
 
 class Settings(BaseSettings):
     URL: str
-    REDISUSERNAME: str
     REDISHOST: str
     REDISPORT: int
     REDISPASSWORD: str
@@ -18,4 +17,4 @@ class Settings(BaseSettings):
         return self.URL
 
     def get_redis_config(self):
-        return self.REDISHOST, self.REDISPORT, self.REDISUSERNAME, self.REDISPASSWORD,
+        return self.REDISHOST, self.REDISPORT, self.REDISPASSWORD,

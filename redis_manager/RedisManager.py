@@ -9,8 +9,8 @@ from base_config import Settings
 
 
 class RedisManager:
-    host, port, username, password = Settings().get_redis_config()
-    client = redis.Redis(host=host, port=port, db=0, decode_responses=True, username=username, password=password)
+    host, port, password = Settings().get_redis_config()
+    client = redis.Redis(host=host, port=port, decode_responses=True, password=password)
 
     @staticmethod
     @exception_wrapper
